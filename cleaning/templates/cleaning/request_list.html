@@ -1,0 +1,64 @@
+{% extends "cleaning/base_generic.html" %}
+
+{% block title %}Мои заявки{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center text-dark font-weight-bold mb-4" style="font-size: 2em;">Мои заявки</h2>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover table-bordered" style="font-size: 1.2em;">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col" class="text-center">Адрес</th>
+                            <th scope="col" class="text-center">Контактная информация</th>
+                            <th scope="col" class="text-center">Дата и время</th>
+                            <th scope="col" class="text-center">Услуга</th>
+                            <th scope="col" class="text-center">Тип оплаты</th>
+                            <th scope="col" class="text-center">Статус</th>
+                            <th scope="col" class="text-center">Причина отмены</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for request in requests %}
+                        <tr>
+                            <td class="align-middle">{{ request.address }}</td>
+                            <td class="align-middle">{{ request.contact_info }}</td>
+                            <td class="align-middle">{{ request.preferred_date_time|date:"d.m.Y H:i" }}</td>
+                            <td class="align-middle">{{ request.service.get_name_display }}</td>
+                            <td class="align-middle">{{ request.get_payment_type_display }}</td>
+                            <td class="align-middle">
+                                <span class="badge
+                                    {% if request.status == 'new' %}badge-primary
+                                    {% elif request.status == 'in_progress' %}badge-warning
+                                    {% elif request.status == 'completed' %}badge-success
+                                    {% elif request.status == 'canceled' %}badge-danger{% endif %}" style="font-size: 1.1em;">
+                                    {{ request.get_status_display }}
+                                </span>
+                            </td>
+                            <td class="align-middle">
+                                {% if request.status == 'canceled' %}
+                                    {{ request.cancellation_reason }}
+                                {% elif request.status == 'new' %}
+                                    <span class="text-muted">Ожидайте ответа от администратора</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" class="text-center text-muted">Нет доступных заявок</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Кнопка "Создать заявку" с цветом btn-info -->
+    <div class="text-center mt-4">
+        <a href="{% url 'create_request' %}" class="btn btn-dark btn-lg" style="font-size: 1.2em;">Создать заявку</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,104 @@
+{% extends "cleaning/base_generic.html" %}
+
+{% block title %}Админ-панель{% endblock %}
+
+{% block content %}
+<div class="container mt-5" style="max-width: 100%;">
+    <h2 class="text-center text-black font-weight-bold mb-4" style="font-size: 2em;">Админ-панель</h2>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive" style="overflow-x: hidden;">
+                <table class="table table-striped table-hover table-bordered" style="font-size: 1.2em; width: 100%; table-layout: fixed;">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col" class="text-center">Пользователь</th>
+                            <th scope="col" class="text-center">Адрес</th>
+                            <th scope="col" class="text-center">Контактная информация</th>
+                            <th scope="col" class="text-center">Дата и время</th>
+                            <th scope="col" class="text-center">Услуга</th>
+                            <th scope="col" class="text-center">Тип оплаты</th>
+                            <th scope="col" class="text-center">Статус</th>
+                            <th scope="col" class="text-center">Действия</th>
+                            <th scope="col" class="text-center">Удалить</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for request in requests %}
+                        <tr>
+                            <td class="align-middle">{{ request.user.username }}</td>
+                            <td class="align-middle">{{ request.address }}</td>
+                            <td class="align-middle">{{ request.contact_info }}</td>
+                            <td class="align-middle">{{ request.preferred_date_time|date:"d.m.Y H:i" }}</td>
+                            <td class="align-middle">{{ request.service.get_name_display }}</td>
+                            <td class="align-middle">{{ request.get_payment_type_display }}</td>
+                            <td class="align-middle">
+                                <span class="badge
+                                    {% if request.status == 'new' %}badge-primary
+                                    {% elif request.status == 'in_progress' %}badge-warning
+                                    {% elif request.status == 'completed' %}badge-success
+                                    {% elif request.status == 'canceled' %}badge-danger{% endif %}" style="font-size: 1.1em;">
+                                    {{ request.get_status_display }}
+                                </span>
+                            </td>
+                            <td class="align-middle">
+                                <form method="post" action="{% url 'update_request_status' request.id %}" id="status_form_{{ request.id }}">
+                                    {% csrf_token %}
+                                    <select name="status" class="form-control" onchange="this.form.submit()" style="font-size: 1.1em;">
+                                        <option value="new" {% if request.status == 'new' %}selected{% endif %}>Новая заявка</option>
+                                        <option value="in_progress" {% if request.status == 'in_progress' %}selected{% endif %}>В работе</option>
+                                        <option value="completed" {% if request.status == 'completed' %}selected{% endif %}>Выполнено</option>
+                                        <option value="canceled" {% if request.status == 'canceled' %}selected{% endif %}>Отменено</option>
+                                    </select>
+                                </form>
+                                <!-- Button to Open the Modal -->
+                                <button type="button" class="btn btn-primary mt-2 btn-warning text-white" data-toggle="modal" data-target="#cancelModal_{{ request.id }}">
+                                    Отменить
+                                </button>
+                                <!-- The Modal -->
+                                <div class="modal" id="cancelModal_{{ request.id }}">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <!-- Modal Header -->
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Отмена заявки</h4>
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            </div>
+                                            <!-- Modal body -->
+                                            <div class="modal-body">
+                                                <form method="post" action="{% url 'update_request_status' request.id %}">
+                                                    {% csrf_token %}
+                                                    <div class="form-group">
+                                                        <label for="cancellation_reason_{{ request.id }}">Причина отмены:</label>
+                                                        <textarea name="cancellation_reason" class="form-control" id="cancellation_reason_{{ request.id }}" required></textarea>
+                                                    </div>
+                                                    <input type="hidden" name="status" value="canceled">
+                                                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                                                </form>
+                                            </div>
+                                            <!-- Modal footer -->
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Закрыть</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="align-middle">
+                                <form method="post" action="{% url 'delete_request' request.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger" style="font-size: 1.1em;">Удалить</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="9" class="text-center text-muted">Нет доступных заявок</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

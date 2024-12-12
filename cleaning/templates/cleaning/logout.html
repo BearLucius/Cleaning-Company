@@ -1,0 +1,10 @@
+{% extends "cleaning/base_generic.html" %}
+
+{% block title %}Выход{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Вы успешно вышли из системы</h2>
+    <a href="{% url 'login' %}" class="btn btn-info btn-lg">Войти снова</a>
+</div>
+{% endblock %}

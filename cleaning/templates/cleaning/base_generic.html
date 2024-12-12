@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Клининговая компания «Мой Не Сам»{% endblock %}</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Обеспечиваем, чтобы html и body занимали всю высоту экрана */
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        /* Flexbox контейнер, который заставляет подвал всегда быть внизу */
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .container {
+            flex: 1;
+        }
+
+        footer {
+            margin-top: auto;  /* Обеспечивает, что подвал будет всегда внизу */
+        }
+
+        /* Стили для всех кнопок */
+        .btn-custom {
+            outline: 1px solid #000000;
+            background: linear-gradient(to right, #963c00, #cf6f2d);; /* Ваш желаемый цвет */
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 25px;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Добавим эффект наведения */
+        .btn-custom:hover {
+            background-color: #cf6f2d; /* Тёмный оттенок для hover */
+        }
+
+        /* Стили для шапки */
+        .navbar {
+            padding: 20px 0; /* Увеличиваем отступы сверху и снизу для широкой шапки */
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center; /* Выравнивание по вертикали */
+            padding-left: 20px; /* Добавляем отступ слева */
+        }
+
+        /* Логотип */
+        .navbar-brand img {
+            height: 60px; /* Увеличиваем размер логотипа */
+            margin-right: 15px; /* Отступ между логотипом и текстом */
+        }
+
+        /* Увеличиваем отступы внутри навигационной панели */
+        .navbar-nav {
+            margin-right: 20px;
+        }
+
+        /* Стили для текста навигации */
+        .navbar-nav .nav-link {
+            font-size: 1.2rem; /* Увеличиваем размер шрифта */
+            font-weight: bold; /* Добавляем жирность шрифта */
+            color: #ff944b; /* Цвет текста, совпадающий с цветом бренда */
+        }
+
+        /* Эффект наведения на ссылки */
+        .navbar-nav .nav-link:hover {
+            color: #963c00; /* Цвет текста при наведении */
+        }
+
+        /* Стили для сообщений об ошибках */
+        .invalid-feedback {
+            display: block;
+            color: #dc3545; /* Красный цвет для ошибок */
+        }
+
+        .alert-danger {
+            color: #dc3545; /* Красный цвет для ошибок */
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+        <a class="navbar-brand text-warning font-weight-bold" href="{% url 'home' %}" style="
+        color: white; /* Цвет текста */
+        filter: drop-shadow(1px 1px 0 black)">
+        {% load static %}
+            <img src="{% static 'img/logo1.png' %}" alt="Логотип">
+            Мой Не Сам
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                {% if user.is_authenticated %}
+                    {% if not user.is_superuser %}
+                        <li class="nav-item">
+                            <a class="nav-link text-black" href="{% url 'create_request' %}">Создать заявку</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-black" href="{% url 'request_list' %}">Мои заявки</a>
+                        </li>
+                    {% endif %}
+                    {% if user.is_superuser %}
+                        <li class="nav-item">
+                            <a class="nav-link text-black" href="{% url 'admin_panel' %}">Админ-панель</a>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link text-black" href="{% url 'logout' %}">Выйти</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link text-black" href="{% url 'register' %}">Регистрация</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-black" href="{% url 'login' %}">Авторизация</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    {% block content %}{% endblock %}
+
+    <footer class="bg-dark text-white py-4">
+        <div class="container text-center">
+            <p>© 2024 «Мой Не Сам!» Все права защищены. | <a href="#" class="text-info">Политика конфиденциальности</a></p>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

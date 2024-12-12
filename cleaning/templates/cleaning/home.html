@@ -1,0 +1,181 @@
+{% extends "cleaning/base_generic.html" %}
+
+{% block title %}«МойНеСам»{% endblock %}
+
+{% block content %}
+{% load static %}
+    <!-- Hero Section with Text on the Left and Image on the Right -->
+    <div class="hero" style="color: white; display: flex; justify-content: space-between; align-items: center; padding: 60px 20px 40px 20px; position: relative; background: linear-gradient(to right, #963c00, #cf6f2d);">
+        <div class="hero-text" style="z-index: 2; max-width: 50%; padding-right: 20px;">
+            <h1>Добро пожаловать{% if user.is_authenticated %}, <span style="font-weight: bold; font-size: 1.2em;">{{ user.username }}</span>{% endif %} в нашу клининговую компанию - "Мой Не Сам!"</h1><br>
+            <h2>Здесь вы можете оставить свои заявки и выбрать одну из предлоежнных нами услуг!</h2>
+            <h3>Мы сделаем ваш дом или офис сияюще чистым!</h3><br>
+            {% if not user.is_authenticated %}
+                <a href="{% url 'register' %}" class="btn btn-primary" style="background-color: #ff944b; outline: 1px solid #000000; border: none; padding: 15px 30px; border-radius: 25px; font-size: 1rem;">Регистрация</a>
+                <a href="{% url 'login' %}" class="btn btn-primary" style="background-color: #ff944b; outline: 1px solid #000000; border: none; padding: 15px 30px; border-radius: 25px; font-size: 1rem; margin-left: 15px;">Авторизация</a>
+            {% endif %}
+        </div>
+        <div class="hero-image" style="z-index: 1;">
+            <img src="{% static 'img/risunok2.jpg' %}" style="width: 1000px; height: auto;">
+        </div>
+    </div>
+
+    <div class="services-section container" style="padding: 60px 0;">
+        <h2 class="text-center mb-5">Наши услуги</h2>
+        <div class="row" style="padding-bottom: 20px; display: flex; justify-content: space-between; margin-left: 0; margin-right: 0; gap: 0;">
+            <!-- Общий клининг -->
+            <div class="col-md-3" style="flex: 1 1 25%; max-width: 25%; padding: 0;">
+                <div class="service-card" style="text-align: center; padding: 40px; border-radius: 10px; background-color: white; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); margin: 0; transition: transform 0.3s ease-in-out; height: 100%;">
+                    <img src="{% static 'img/cleaning.jpg' %}" alt="Общий клининг" style="width: 100%; height: 250px; object-fit: cover; margin-bottom: 20px;">
+                    <h5>Общий клининг</h5>
+                    <p>Полный уборочный сервис для вашего дома или офиса.</p>
+                </div>
+            </div>
+
+            <!-- Генеральная уборка -->
+            <div class="col-md-3" style="flex: 1 1 25%; max-width: 25%; padding: 0;">
+                <div class="service-card" style="text-align: center; padding: 40px; border-radius: 10px; background-color: white; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); margin: 0; transition: transform 0.3s ease-in-out; height: 100%;">
+                    <img src="{% static 'img/cleaning1.jpg' %}" alt="Генеральная уборка" style="width: 100%; height: 250px; object-fit: cover; margin-bottom: 20px;">
+                    <h5>Генеральная уборка</h5>
+                    <p>Тщательная уборка с акцентом на каждую деталь вашего пространства.</p>
+                </div>
+            </div>
+
+            <!-- Послестроительная уборка -->
+            <div class="col-md-3" style="flex: 1 1 25%; max-width: 25%; padding: 0;">
+                <div class="service-card" style="text-align: center; padding: 40px; border-radius: 10px; background-color: white; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); margin: 0; transition: transform 0.3s ease-in-out; height: 100%;">
+                    <img src="{% static 'img/cleaning2.jpg' %}" alt="Послестроительная уборка" style="width: 100%; height: 250px; object-fit: cover; margin-bottom: 20px;">
+                    <h5>Послестроительная уборка</h5>
+                    <p>Уборка после ремонта, строительства или реконструкции.</p>
+                </div>
+            </div>
+
+            <!-- Химчистка ковров и мебели -->
+            <div class="col-md-3" style="flex: 1 1 25%; max-width: 25%; padding: 0;">
+                <div class="service-card" style="text-align: center; padding: 40px; border-radius: 10px; background-color: white; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); margin: 0; transition: transform 0.3s ease-in-out; height: 100%;">
+                    <img src="{% static 'img/clean4.png' %}" alt="Химчистка ковров и мебели" style="width: 100%; height: 250px; object-fit: cover; margin-bottom: 20px;">
+                    <h5>Химчистка ковров и мебели</h5>
+                    <p>Профессиональная химчистка для вашего комфорта и чистоты.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .service-card:hover {
+            transform: scale(1.1);
+        }
+
+        .services-section .row {
+            display: flex;
+            justify-content: space-between;
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+        .service-card {
+            transition: transform 0.3s ease-in-out;
+            padding: 40px;
+            border-radius: 10px;
+            background-color: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+            height: 100%;
+        }
+
+        .hero-image img {
+            width: 1000px;
+            height: auto;
+        }
+    </style>
+
+  <!-- О компании -->
+    <div class="about-section container text-center" style="padding: 60px 0;">
+        <h2 class="mb-4">О компании</h2>
+        <p>Наша компания «Мой Не Сам» предоставляет услуги по уборке и чистке помещений. Мы гарантируем высокое качество обслуживания и использование только экологически чистых материалов.</p>
+        <div class="row">
+            <div class="col-md-4">
+                <img src="{% static 'img/cleanclean.jpg' %}" alt="О компании 1" class="img-fluid mb-3" style="max-height: 200px; object-fit: cover;">
+                <h5>Наша миссия</h5>
+                <p>Создать чистую и комфортную среду для жизни и работы.</p>
+            </div>
+            <div class="col-md-4">
+                <img src="{% static 'img/risunok2.jpg' %}" alt="О компании 2" class="img-fluid mb-3" style="max-height: 200px; object-fit: cover;">
+                <h5>Наши ценности</h5>
+                <p>Качество, доверие и ответственность.</p>
+            </div>
+            <div class="col-md-4">
+                <img src="{% static 'img/cleaner4.png' %}" alt="О компании 3" class="img-fluid mb-3" style="max-height: 200px; object-fit: cover;">
+                <h5>Наша команда</h5>
+                <p>Профессионалы с большим опытом и любовью к своему делу.</p>
+            </div>
+        </div>
+    </div>
+
+<!-- Свяжитесь с нами -->
+    <div class="contact-section container text-center" style="padding: 60px 0;">
+        <h2 class="mb-4">Свяжитесь с нами</h2>
+        <p>Если у вас есть вопросы или вы хотите получить консультацию, заполните форму ниже, и мы свяжемся с вами как можно скорее.</p>
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="name">Ваше имя</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="email">Ваш email</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="message">Сообщение</label>
+                <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="background-color: #ff944b; border: none; padding: 10px 20px; border-radius: 25px;">Отправить</button>
+        </form>
+    </div>
+
+    <style>
+        .service-card:hover {
+            transform: scale(1.1);
+        }
+
+        .services-section .row {
+            display: flex;
+            justify-content: space-between;
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+        .service-card {
+            transition: transform 0.3s ease-in-out;
+            padding: 40px;
+            border-radius: 10px;
+            background-color: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+            height: 100%;
+        }
+
+        .hero-image img {
+            width: 1000px;
+            height: auto;
+        }
+
+        .contact-section {
+            background-color: #f8f9fa; /* Светлый фон для секции контактов */
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+{% endblock %}
